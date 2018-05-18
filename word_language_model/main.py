@@ -147,6 +147,7 @@ def train():
     total_loss = 0.
     start_time = time.time()
     ntokens = len(corpus.dictionary)
+    print(ntokens)
     hidden = model.init_hidden(args.batch_size)
     for batch, i in enumerate(range(0, train_data.size(0) - 1, args.bptt)):
         data, targets = get_batch(train_data, i)
@@ -155,6 +156,9 @@ def train():
         hidden = repackage_hidden(hidden)
         model.zero_grad()
         output, hidden = model(data, hidden)
+        print(output.size())
+        print(output.view(-1, ntokens).size())
+        print(targets.size())
         loss = criterion(output.view(-1, ntokens), targets)
         loss.backward()
 
